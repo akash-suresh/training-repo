@@ -99,12 +99,46 @@ node* reverse_list(node *root){
 	}
 	return x;
 }
+node* insert_split(node *root, node *split_node){
+
+	node *temp = root;
+	if(root==NULL){
+		root = split_node;
+		return root;
+	}
+	while(temp->rptr!=NULL){
+		temp =temp->rptr;
+	}
+	temp->rptr=split_node;	
+	return root;
+}
+void split(node *root){
+	node *new_root=NULL,*temp=root,*root_cnt;
+	if(root==NULL || root->rptr==NULL){
+		printf("insufficent number of nodes");
+		return;
+	}
+	root_cnt=root;
+	while(temp!=NULL){
+		temp=temp->rptr;
+		if(temp==NULL){
+			break;
+		}
+		root_cnt->rptr=temp->rptr;
+		temp->rptr=NULL;
+		new_root = insert_split(new_root,temp);
+		temp=root_cnt->rptr;
+		root_cnt=temp;
+	}
+	display(root);
+	display(new_root);
+}
 int main(){
 	node *root=NULL;
 	int choice;
 	printf("\nwelcome to the world of linked list");
 	while(1){
-		printf("\nMenu:\n1.insert at front\n2.insert at the end\n3.delete at front\n4.delete at end \n5.reverse the linked list\nenter your choice:");
+		printf("\nMenu:\n1.insert at front\n2.insert at the end\n3.delete at front\n4.delete at end \n5.reverse the linked list\n6.split odd and even terms into two ll\nenter your choice:");
 		scanf("%d",&choice);
 		switch(choice){
 			case 1: root = insert_at_front(root);
@@ -121,6 +155,8 @@ int main(){
 					break;
 			case 5: root = reverse_list(root);
 					display(root);
+					break;
+			case 6: split(root);
 					break;
 			default:return 0;
 		}	
